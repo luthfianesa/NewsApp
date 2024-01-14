@@ -1,0 +1,11 @@
+/* Header */
+.header__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* News Filter */
+
+
+/* News Contents */
