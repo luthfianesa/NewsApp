@@ -16,6 +16,24 @@
 }
 
 /* News Filter */
+#filter-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
 
+#keyword-input,
+#date-input {
+  width: 25%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin-right: 10px;
+}
+
+#filter-btn {
+  padding: 8px 15px;
+  cursor: pointer;
+}
 
 /* News Contents */
