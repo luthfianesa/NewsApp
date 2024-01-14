@@ -53,6 +53,7 @@ a:hover {
   nav {
     flex-direction: column;
     text-align: center;
+    /* width: 100%; */
   }
 
   .navbar-brand h1 {
@@ -76,7 +77,6 @@ footer {
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
-  width: 100%;
 }
 
 footer p {
@@ -116,9 +116,3 @@ footer a {
   margin-top: 10px;
 }
 
-/* Footer Responsive */
-@media screen and (max-width: 600px) {
-  footer {
-    padding: 15px;
-  }
-}

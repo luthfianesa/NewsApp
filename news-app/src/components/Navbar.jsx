@@ -6,7 +6,9 @@ const Navbar = () => {
   return (
     <nav>
       <div className="navbar-brand">
-        <Image src={NewsBrand} width={50} height={50} alt="news logo" />
+        <Link href="/">
+          <Image src={NewsBrand} width={50} height={50} alt="news logo" />
+        </Link>
         <h1>Binar News</h1>
       </div>
       <ul>
