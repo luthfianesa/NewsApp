@@ -5,6 +5,16 @@
   align-items: center;
 }
 
+.header__heading h1 {
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.header__heading h6 {
+  font-size: 17px;
+  font-weight: 400;
+}
+
 /* News Filter */
 
 
