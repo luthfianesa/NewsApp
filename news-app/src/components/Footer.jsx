@@ -12,7 +12,6 @@ const Footer = () => {
         <div className="footer__navigation">
           <Link href="/">Home</Link>
           <Link href="/about">About</Link>
-          <Link href="/contact">Contact</Link>
         </div>
 
         <div className="footer__social__separator">

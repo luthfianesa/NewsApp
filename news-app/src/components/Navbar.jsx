@@ -14,7 +14,7 @@ const Navbar = () => {
         <Link href="/" onClick={redirectToHome}>
           <Image src={NewsBrand} width={50} height={50} alt="news logo" />
         </Link>
-        <h1  onClick={redirectToHome}>Binar News</h1>
+        <h1 onClick={redirectToHome}>Binar News</h1>
       </div>
       <ul>
         <Link href="/" onClick={redirectToHome}>
@@ -22,9 +22,6 @@ const Navbar = () => {
         </Link>
         <Link href="/about">
           <li>About</li>
-        </Link>
-        <Link href="/contact">
-          <li>Contact</li>
         </Link>
       </ul>
     </nav>
