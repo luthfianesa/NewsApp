@@ -1,19 +1,22 @@
+// NewsContents.jsx
 "use client";
 import { useEffect, useState } from "react";
 import "../app/homepage.modules.css";
 
 const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [news, setNews] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Construct the API URL with both keyword and date query parameters
+        // Construct the API URL with both keyword, date, and page query parameters
         const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
           keywordFilter.keyword
-        )}&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
+        )}&pageSize=9&page=${page}&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -25,24 +28,8 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
         // Log the fetched data to the console
         console.log("Fetched data:", data);
 
-        let filteredNews = data.articles;
-
-        // Filter news by keyword
-        if (keywordFilter.keyword) {
-          filteredNews = filteredNews.map((article) => {
-            const words = article.title.split(" ");
-            const highlightedTitle = words.map((word) =>
-              word.toLowerCase() === keywordFilter.keyword.toLowerCase() ? (
-                <span class="highlight">{word}</span>
-              ) : (
-                word
-              )
-            );
-            return { ...article, highlightedTitle };
-          });
-        }
-
-        setNews(filteredNews);
+        setNews(data.articles);
+        setTotalPages(Math.ceil(data.totalResults / 9)); // Assuming 9 items per page
       } catch (error) {
         setError(error);
       } finally {
@@ -51,11 +38,15 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
     };
 
     fetchData();
-  }, [keywordFilter, dateFilter]);
+  }, [keywordFilter, dateFilter, page]);
 
   const getRandomImage = () => {
     const randomImageId = Math.floor(Math.random() * 1000) + 1;
     return `https://picsum.photos/150/150?random=${randomImageId}`;
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
   };
 
   return (
@@ -80,13 +71,26 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
                     <h2
                       className="news-title"
                       dangerouslySetInnerHTML={{
-                        __html: article.highlightedTitle || article.title,
+                        __html: article.title,
                       }}
                     />
                     <p className="news-author">Author: {article.author}</p>
                     <p className="news-description">{article.description}</p>
                   </div>
                 </div>
+              ))}
+            </div>
+          )}
+          {totalPages > 1 && (
+            <div className="pagination">
+              {[...Array(totalPages).keys()].map((pageNum) => (
+                <button
+                  key={pageNum + 1}
+                  onClick={() => handlePageChange(pageNum + 1)}
+                  className={pageNum + 1 === page ? 'active' : ''}
+                >
+                  {pageNum + 1}
+                </button>
               ))}
             </div>
           )}
