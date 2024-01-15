@@ -13,6 +13,16 @@ const Contact = () => {
         <p>Feel free to reach out to us for any inquiries or feedback.</p>
 
         <div className="contact-info">
+          <div className="contact-details">
+            <h2>Our Office</h2>
+            <p>Jl Parahyangan No 12, Bandung, Indonesia, 18214</p>
+
+            <h2>Email</h2>
+            <p>info@binarnews.com</p>
+
+            <h2>Phone</h2>
+            <p>+62-123-456-7890</p>
+          </div>
           <div className="contact-form">
             <form>
               <label htmlFor="name">Name:</label>
@@ -26,17 +36,6 @@ const Contact = () => {
 
               <button type="submit">Submit</button>
             </form>
-          </div>
-
-          <div className="contact-details">
-            <h2>Our Office</h2>
-            <p>Jl Parahyangan No 12, Bandung, Indonesia, 18214</p>
-
-            <h2>Email</h2>
-            <p>info@binarnews.com</p>
-
-            <h2>Phone</h2>
-            <p>+62 (123) 456-7890</p>
           </div>
         </div>
       </div>
