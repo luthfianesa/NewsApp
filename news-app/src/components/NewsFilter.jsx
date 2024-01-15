@@ -1,8 +1,9 @@
 "use client";
-import { useState} from "react";
+import { useState } from "react";
 
 const NewsFilter = ({ onFilter }) => {
   const [keyword, setKeyword] = useState("");
+  console.log(keyword);
 
   const handleFilter = () => {
     onFilter({ keyword });

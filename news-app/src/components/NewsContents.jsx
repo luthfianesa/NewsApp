@@ -10,7 +10,9 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://newsapi.org/v2/everything?q=Apple&page=1&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6");
+        // Construct the API URL with the keyword query parameter
+        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keywordFilter.keyword)}&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6`;
+        const response = await fetch(apiUrl);
 
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -64,10 +66,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
                 <div key={index} className="news-item">
                   <img src={article.urlToImage || getRandomImage()} alt="News Image" />
                   <div className="news-details">
-                    <h2
-                      className="news-title"
-                      dangerouslySetInnerHTML={{ __html: article.highlightedTitle || article.title }}
-                    />
+                    <h2 className="news-title" dangerouslySetInnerHTML={{ __html: article.highlightedTitle || article.title }} />
                     <p className="news-author">Author: {article.author}</p>
                     <p className="news-description">{article.description}</p>
                   </div>
