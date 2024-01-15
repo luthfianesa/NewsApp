@@ -49,6 +49,13 @@ header {
   position: relative;
 }
 
+.loading-news, .error-news {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

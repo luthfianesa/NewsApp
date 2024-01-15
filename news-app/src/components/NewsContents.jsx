@@ -68,9 +68,9 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   return (
     <div className="news-container">
       {isLoading ? (
-        <p>Loading news...</p>
+        <p className="loading-news">Loading news...</p>
       ) : error ? (
-        <p>Error fetching news: {error.message}</p>
+        <p className="erorr-news">Error fetching news: {error.message}</p>
       ) : (
         <>
           <div className="news-outer-container">
