@@ -1,6 +1,8 @@
+// NewsContents.jsx
 "use client";
 import { useEffect, useState } from "react";
 import "../app/homepage.modules.css";
+import NewsModal from "./NewsModal";
 
 const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [news, setNews] = useState([]);
@@ -8,12 +10,15 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedArticle, setSelectedArticle] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the API URL with both keyword, date, and page query parameters
-        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keywordFilter.keyword)}&pageSize=10&page=${page}&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
+        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+          keywordFilter.keyword
+        )}&pageSize=10&page=${page}&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -46,9 +51,17 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
     setPage(newPage);
   };
 
+  const handleNewsClick = (article) => {
+    setSelectedArticle(article);
+  };
+
+  const closeModal = () => {
+    setSelectedArticle(null);
+  };
+
   const formatDate = (dateString) => {
-    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = new Date(dateString).toLocaleDateString("en-US", options);
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
     return formattedDate;
   };
 
@@ -66,7 +79,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
             ) : (
               <div className="news-inner-container">
                 {news.map((article, index) => (
-                  <div key={index} className="news-item">
+                  <div key={index} className="news-item" onClick={() => handleNewsClick(article)}>
                     <img src={article.urlToImage || getRandomImage()} alt="News Image" />
                     <div className="news-details">
                       <h2
@@ -75,12 +88,8 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
                           __html: article.title,
                         }}
                       />
-                      <p className="news-author">
-                        <span>Author:</span> {article.author}
-                      </p>
-                      <p className="news-date">
-                        <span>Date:</span> {formatDate(article.publishedAt)}
-                      </p>
+                      <p className="news-author">Author: {article.author}</p>
+                      <p className="news-date">Date: {formatDate(article.publishedAt)}</p>
                       <p className="news-description">{article.description}</p>
                     </div>
                   </div>
@@ -91,13 +100,20 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
           {totalPages > 1 && (
             <div className="pagination">
               {[...Array(Math.min(10, totalPages)).keys()].map((pageNum) => (
-                <button key={pageNum + 1} onClick={() => handlePageChange(pageNum + 1)} className={pageNum + 1 === page ? "active" : ""}>
+                <button
+                  key={pageNum + 1}
+                  onClick={() => handlePageChange(pageNum + 1)}
+                  className={pageNum + 1 === page ? 'active' : ''}
+                >
                   {pageNum + 1}
                 </button>
               ))}
             </div>
           )}
         </>
+      )}
+      {selectedArticle && (
+        <NewsModal article={selectedArticle} onClose={closeModal} />
       )}
     </div>
   );
