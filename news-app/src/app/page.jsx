@@ -11,10 +11,10 @@ export default function Home() {
   const handleFilter = (newFilter) => {
     if (newFilter.keyword) {
       setKeywordFilter(newFilter);
-      setDateFilter({}); // Clear date filter when keyword filter is applied
+      setDateFilter({});
     } else if (newFilter.date) {
       setDateFilter(newFilter);
-      setKeywordFilter({}); // Clear keyword filter when date filter is applied
+      setKeywordFilter({});
     }
   };
 

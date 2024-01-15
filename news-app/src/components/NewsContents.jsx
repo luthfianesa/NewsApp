@@ -10,8 +10,10 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Construct the API URL with the keyword query parameter
-        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keywordFilter.keyword)}&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6`;
+        // Construct the API URL with both keyword and date query parameters
+        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+          keywordFilter.keyword
+        )}&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -29,7 +31,13 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
         if (keywordFilter.keyword) {
           filteredNews = filteredNews.map((article) => {
             const words = article.title.split(" ");
-            const highlightedTitle = words.map((word) => (word.toLowerCase() === keywordFilter.keyword.toLowerCase() ? `<span class="highlight">${word}</span>` : word)).join(" ");
+            const highlightedTitle = words.map((word) =>
+              word.toLowerCase() === keywordFilter.keyword.toLowerCase() ? (
+                <span class="highlight">{word}</span>
+              ) : (
+                word
+              )
+            );
             return { ...article, highlightedTitle };
           });
         }
@@ -43,7 +51,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
     };
 
     fetchData();
-  }, [keywordFilter]);
+  }, [keywordFilter, dateFilter]);
 
   const getRandomImage = () => {
     const randomImageId = Math.floor(Math.random() * 1000) + 1;
@@ -64,9 +72,17 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
             <div className="news-inner-container">
               {news.map((article, index) => (
                 <div key={index} className="news-item">
-                  <img src={article.urlToImage || getRandomImage()} alt="News Image" />
+                  <img
+                    src={article.urlToImage || getRandomImage()}
+                    alt="News Image"
+                  />
                   <div className="news-details">
-                    <h2 className="news-title" dangerouslySetInnerHTML={{ __html: article.highlightedTitle || article.title }} />
+                    <h2
+                      className="news-title"
+                      dangerouslySetInnerHTML={{
+                        __html: article.highlightedTitle || article.title,
+                      }}
+                    />
                     <p className="news-author">Author: {article.author}</p>
                     <p className="news-description">{article.description}</p>
                   </div>
