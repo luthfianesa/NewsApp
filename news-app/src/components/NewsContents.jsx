@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import "../app/homepage.modules.css";
 
-const NewsContents = () => {
+const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +17,22 @@ const NewsContents = () => {
         }
 
         const data = await response.json();
-        setNews(data.articles);
+
+        // Log the fetched data to the console
+        console.log("Fetched data:", data);
+
+        let filteredNews = data.articles;
+
+        // Filter news by keyword
+        if (keywordFilter.keyword) {
+          filteredNews = filteredNews.map((article) => {
+            const words = article.title.split(" ");
+            const highlightedTitle = words.map((word) => (word.toLowerCase() === keywordFilter.keyword.toLowerCase() ? `<span class="highlight">${word}</span>` : word)).join(" ");
+            return { ...article, highlightedTitle };
+          });
+        }
+
+        setNews(filteredNews);
       } catch (error) {
         setError(error);
       } finally {
@@ -26,10 +41,10 @@ const NewsContents = () => {
     };
 
     fetchData();
-  }, []);
+  }, [keywordFilter]);
 
   const getRandomImage = () => {
-    const randomImageId = Math.floor(Math.random() * 1000) + 1; // You can adjust the range as needed
+    const randomImageId = Math.floor(Math.random() * 1000) + 1;
     return `https://picsum.photos/150/150?random=${randomImageId}`;
   };
 
@@ -41,18 +56,25 @@ const NewsContents = () => {
         <p>Error fetching news: {error.message}</p>
       ) : (
         <div className="news-outer-container">
-          <div className="news-inner-container">
-            {news.map((article, index) => (
-              <div key={index} className="news-item">
-                <img src={article.urlToImage || getRandomImage()} alt="News Image" />
-                <div className="news-details">
-                  <h2 className="news-title">{article.title}</h2>
-                  <p className="news-author">Author: {article.author}</p>
-                  <p className="news-description">{article.description}</p>
+          {news.length === 0 ? (
+            <p>News not found.</p>
+          ) : (
+            <div className="news-inner-container">
+              {news.map((article, index) => (
+                <div key={index} className="news-item">
+                  <img src={article.urlToImage || getRandomImage()} alt="News Image" />
+                  <div className="news-details">
+                    <h2
+                      className="news-title"
+                      dangerouslySetInnerHTML={{ __html: article.highlightedTitle || article.title }}
+                    />
+                    <p className="news-author">Author: {article.author}</p>
+                    <p className="news-description">{article.description}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

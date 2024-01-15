@@ -1,18 +1,23 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import NewsBrand from "../../public/images/binar-logo.png";
 
 const Navbar = () => {
+  function redirectToHome() {
+    window.location.href = "/";
+  }
+
   return (
     <nav>
       <div className="navbar-brand">
-        <Link href="/">
+        <Link href="/" onClick={redirectToHome}>
           <Image src={NewsBrand} width={50} height={50} alt="news logo" />
         </Link>
-        <h1>Binar News</h1>
+        <h1  onClick={redirectToHome}>Binar News</h1>
       </div>
       <ul>
-        <Link href="/">
+        <Link href="/" onClick={redirectToHome}>
           <li>Home</li>
         </Link>
         <Link href="/about">

@@ -1,8 +1,8 @@
-"use client";
-import { useState } from "react";
-import Header from "@/components/Header";
-import NewsFilter from "@/components/NewsFilter";
-import NewsContents from "@/components/NewsContents";
+
+
+
+
+
 
 export default function Home() {
   const [keywordFilter, setKeywordFilter] = useState({});

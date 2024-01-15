@@ -36,8 +36,12 @@ header {
 }
 
 #filter-btn {
+  background-color: #4caf50;
+  color: white;
   padding: 8px 15px;
   cursor: pointer;
+  border-radius: 4px;
+  border: none;
 }
 
 /* News Content */
@@ -69,6 +73,10 @@ header {
 
 .news-details {
   padding: 15px;
+}
+
+.highlight {
+  color: yellow;
 }
 
 .news-title {
