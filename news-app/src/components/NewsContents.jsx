@@ -1,73 +1,60 @@
-import Image from "next/image";
-import News1 from "../../public/images/img-1.png";
-import News2 from "../../public/images/img-2.png";
-import News3 from "../../public/images/img-3.jpg";
-import News4 from "../../public/images/img-4.jpg";
-import News5 from "../../public/images/img-5.jpg";
-import News6 from "../../public/images/img-6.jpg";
-import News7 from "../../public/images/img-7.jpg";
+"use client";
+import { useEffect, useState } from "react";
+import "../app/homepage.modules.css";
+
 const NewsContents = () => {
+  const [news, setNews] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://newsapi.org/v2/everything?q=Apple&page=1&pageSize=9&apiKey=3341deda0b2147ef8c8c1702d56241b6");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const data = await response.json();
+        setNews(data.articles);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const getRandomImage = () => {
+    const randomImageId = Math.floor(Math.random() * 1000) + 1; // You can adjust the range as needed
+    return `https://picsum.photos/150/150?random=${randomImageId}`;
+  };
+
   return (
-    <div class="news-container">
-      <div class="news-item">
-        <Image src={News1} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 1</h2>
-          <p class="news-author">Author: John Doe</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
+    <div className="news-container">
+      {isLoading ? (
+        <p>Loading news...</p>
+      ) : error ? (
+        <p>Error fetching news: {error.message}</p>
+      ) : (
+        <div className="news-outer-container">
+          <div className="news-inner-container">
+            {news.map((article, index) => (
+              <div key={index} className="news-item">
+                <img src={article.urlToImage || getRandomImage()} alt="News Image" />
+                <div className="news-details">
+                  <h2 className="news-title">{article.title}</h2>
+                  <p className="news-author">Author: {article.author}</p>
+                  <p className="news-description">{article.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-
-      <div class="news-item">
-        <Image src={News2} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 2</h2>
-          <p class="news-author">Author: Jane Smith</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
-      <div class="news-item">
-        <Image src={News3} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 3</h2>
-          <p class="news-author">Author: Emily Rudd</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <Image src={News4} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 4</h2>
-          <p class="news-author">Author: Kaylie Johnson</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
-      <div class="news-item">
-        <Image src={News5} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 5</h2>
-          <p class="news-author">Author: Zell Dincht</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
-
-      <div class="news-item">
-        <Image src={News6} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 6</h2>
-          <p class="news-author">Author: Jaden Smith</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
-      <div class="news-item">
-        <Image src={News7} alt="News Image" />
-        <div class="news-details">
-          <h2 class="news-title">News Title 7</h2>
-          <p class="news-author">Author: Donnie Yen</p>
-          <p class="news-description">Description of the news content goes here. This is a brief summary of the news article.</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
