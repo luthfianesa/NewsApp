@@ -1,0 +1,14 @@
+{
+  "builds": [
+    { "src": "next.config.js", "use": "@vercel/node" }
+  ],
+  "version": 2,
+  "name": "news-app",
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.js" }
+  ],
+  "functions": { "api/index.js": { "runtime": "js-node", "memory": 1024 } },
+  "env": { "NEXT_PUBLIC_API_URL": "https://api.example.com" },
+  "public": true
+}
