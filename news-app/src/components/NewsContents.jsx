@@ -1,5 +1,5 @@
-// NewsContents.jsx
 "use client";
+// require("dotenv").config({ path: "../../../../.env" });
 import { useEffect, useState } from "react";
 import "../app/homepage.modules.css";
 import NewsModal from "./NewsModal";
@@ -11,14 +11,13 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const apiKey = '3341deda0b2147ef8c8c1702d56241b6'
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Construct the API URL with both keyword, date, and page query parameters
-        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
-          keywordFilter.keyword
-        )}&pageSize=10&page=${page}&apiKey=3341deda0b2147ef8c8c1702d56241b6${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
+        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keywordFilter.keyword)}&pageSize=10&page=${page}&apiKey=${apiKey}${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -60,8 +59,8 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   };
 
   const formatDate = (dateString) => {
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = new Date(dateString).toLocaleDateString('en-US', options);
+    const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    const formattedDate = new Date(dateString).toLocaleDateString("en-US", options);
     return formattedDate;
   };
 
@@ -100,11 +99,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
           {totalPages > 1 && (
             <div className="pagination">
               {[...Array(Math.min(10, totalPages)).keys()].map((pageNum) => (
-                <button
-                  key={pageNum + 1}
-                  onClick={() => handlePageChange(pageNum + 1)}
-                  className={pageNum + 1 === page ? 'active' : ''}
-                >
+                <button key={pageNum + 1} onClick={() => handlePageChange(pageNum + 1)} className={pageNum + 1 === page ? "active" : ""}>
                   {pageNum + 1}
                 </button>
               ))}
@@ -112,9 +107,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
           )}
         </>
       )}
-      {selectedArticle && (
-        <NewsModal article={selectedArticle} onClose={closeModal} />
-      )}
+      {selectedArticle && <NewsModal article={selectedArticle} onClose={closeModal} />}
     </div>
   );
 };

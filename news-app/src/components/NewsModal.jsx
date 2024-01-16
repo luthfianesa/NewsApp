@@ -9,7 +9,6 @@ const NewsModal = ({ article, onClose }) => {
         <p>Author: {article.author}</p>
         <p>Date: {formatDate(article.publishedAt)}</p>
         <p>{article.description}</p>
-        {/* Additional content/details */}
         <button onClick={onClose}>Close</button>
       </div>
     </div>

@@ -14,6 +14,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "dotenv": "^16.3.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
   }
