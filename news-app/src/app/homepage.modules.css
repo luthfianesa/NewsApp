@@ -49,7 +49,8 @@ header {
   position: relative;
 }
 
-.loading-news, .error-news {
+.loading-news,
+.error-news {
   display: flex;
   justify-content: center;
   margin-top: 20px;
@@ -107,9 +108,16 @@ header {
   cursor: pointer;
 }
 
+.img-container {
+  height: 250px;
+  /* border: 1px solid; */
+}
+
 .news-item img {
   width: 100%;
-  height: 250px;
+  height: 100%;
+  object-fit: cover;
+  /* border: 1px solid; */
 }
 
 .news-details {

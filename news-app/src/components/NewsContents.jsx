@@ -11,13 +11,18 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedArticle, setSelectedArticle] = useState(null);
-  const apiKey = '3341deda0b2147ef8c8c1702d56241b6'
+  const apiKey = "3341deda0b2147ef8c8c1702d56241b6";
+  //
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(dateFilter);
         // Construct the API URL with both keyword, date, and page query parameters
-        const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keywordFilter.keyword)}&pageSize=10&page=${page}&apiKey=${apiKey}${dateFilter.date ? `&from=${dateFilter.date}` : ""}`;
+        const apiUrl = `https://newsapi.org/v2/everything?q=${keywordFilter.keyword}&pageSize=10&page=${page}&apiKey=${apiKey}${dateFilter.dateStart ? `&from=${dateFilter.dateStart} ` : ""}${
+          dateFilter.dateEnd ? `&to=${dateFilter.dateEnd}` : ""
+        }`;
+
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -41,6 +46,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
     fetchData();
   }, [keywordFilter, dateFilter, page]);
 
+  // Get online random image when the news has no Image
   const getRandomImage = () => {
     const randomImageId = Math.floor(Math.random() * 1000) + 1;
     return `https://picsum.photos/150/150?random=${randomImageId}`;
@@ -57,7 +63,7 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
   const closeModal = () => {
     setSelectedArticle(null);
   };
-
+  // Formatting date to
   const formatDate = (dateString) => {
     const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
     const formattedDate = new Date(dateString).toLocaleDateString("en-US", options);
@@ -79,7 +85,9 @@ const NewsContents = ({ keywordFilter, dateFilter }) => {
               <div className="news-inner-container">
                 {news.map((article, index) => (
                   <div key={index} className="news-item" onClick={() => handleNewsClick(article)}>
-                    <img src={article.urlToImage || getRandomImage()} alt="News Image" />
+                    <div className="img-container">
+                      <img src={article.urlToImage || getRandomImage()} alt="News Image" />
+                    </div>
                     <div className="news-details">
                       <h2
                         className="news-title"

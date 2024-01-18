@@ -52,6 +52,12 @@ a:hover {
   color: #ffd700; /* Change color on hover */
 }
 
+@media screen and (max-width: 500px) {
+  footer {
+    display: none;
+  }
+}
+
 /* Navbar Responsive */
 @media screen and (max-width: 600px) {
   nav {
@@ -119,4 +125,3 @@ footer a {
   justify-content: center;
   margin-top: 10px;
 }
-
